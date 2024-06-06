@@ -1,0 +1,169 @@
+Copyright 1991-2024 Jillian Alana Bolton
+Copyright 1995 Mark P. Fister
+
+The BSD 2-Clause License
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above
+    copyright notice, this list of conditions and the following
+    disclaimer in the documentation and/or other materials provided
+    with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS
+BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Jump-Start Documentation for dumper, a multi-radix file dump program.
+
+Dumper is a program which provides numeric and ASCII dumps of files.
+(Other collating sequences may work, but have not been tested.)
+You may either specify a file on the command line, or redirect output
+to dumper.
+
+Dumper has been successfully tested as documented under:
+
+   UNIX platforms:
+      SunOS 4.1 (Sun 3 and Sun 4)
+      NeXT Mach (under NeXTStep 2.x and 3.x)
+      Dynix (PUCC Dynix.  May not work on standard distribution)
+      Linux 1.0
+      OSF/1 3.0
+      AIX 3.2.5
+      SCO UNIX 3.2
+
+   IBM PC (xx-DOS) platforms:
+      MS-DOS 3.3 - 6.0
+      PCDOS 3.3 - 5.0.  (IBM DOS)
+
+   VAX platforms:
+      VMS 5.5-2 on a microVAX 3100-0040.  (See README.VMS)
+      VMS 6.1 on a DEC Alpha 3000.
+
+Three automated make procedures are provided with dumper.
+
+   - makefile.tc   This file is for Turbo C++ 2nd edition.  With a little
+                   tweaking, this should work with any other DOS make
+                   facility.  The only differences between the makefile.tc
+                   and makefile.unx are the definitions of some of
+                   the symbols. The makefile assumes that you have GNU
+                   fileutils installed and in your path
+
+   - makefile.unx  This file is for UNIX.  (All versions.)
+   
+   - vmsbuild.com  This file is for VMS.  DOS Users:  DO NOT RUN THIS FILE!
+                   It is a text command procedure for VMS, not a DOS
+                   executable.
+
+                   @vmsbuild dumper
+
+                   By default, the procedure attempts to install dumper in [-]
+
+                   I used to get slightly better results using the UNIX
+                   low-level I/O package of routines, but have reverted
+                   to stdio streams by default. To use the code for these
+                   routines, define USE_LOW_LEVEL_IO.
+
+                   Now you need to define the following symbol every time
+                   you want to use dumper.  BINDIR is the path to the
+                   directory you are keeping the executable in.
+
+                   DUMPER == "BINDIR:DUMPER.EXE"
+
+                   Then you can follow the instructions below.
+
+DOS and UNIX Users, here are the available targets:
+
+   - dumper        Creates the executable in the current directory.
+
+   - clean         This will work on UNIX systems, and some DOS systems.
+                   DOS users need at least something equivalent of
+                   "rm -f" that is to say, you need a delete command that
+                   can ignore errors and always return a success code.
+
+                   "clean" cleans up after the make.
+
+   - install       Tries to put dumper in BINDIR
+
+Compilation notes:
+
+You should no longer need an ANSI-conforming compiler.
+
+Some compilers may not define all the necessary information, or some
+info may not be in the header files that dumper is looking in.  If
+this is the case, you have options which vary depending on the problem.
+
+Also, if you have a BSD machine and your "ANSI-conforming" compiler uses
+<strings.h> instead of <string.h> you must compile with -DBSD.  If you don't
+the code may not compile correctly.
+
+undefined identifier strlwr:
+   Add -DNO_STRLWR to the makefile flags, or #define NO_STRLWR 1 in
+   the code.  This will provide a strlwr() function.
+
+Some toolchains don't provide all the niceties that the ANSI C Library
+specifies. Here are potential remedies.
+
+undefined identifier perror:
+
+   Add -DNO_PERROR to the makefile flags, or #define NO_PERROR 1 in
+   the code.  This will compile using strerror() instead of perror().
+
+undefined identifier errno:
+   Add -DNO_ERRNO to the makefile flags or #define NO_ERRNO 1 in the code.
+   This will provide a constant errno of 0.  You will not get meaningful
+   error messages from dumper, but the code will be more likely to compile.
+
+undefined identifier strerror:
+   Add -DNO_STR_ERROR to the makefile flags or #define NO_STRERROR 1
+   in the code.  This will provide a strerror() function.  If you
+   define NO_ERRNO also, you will not get meaningful erro messages.
+
+undefined identifier sys_errlist:
+   Add -DNO_SYS_ERRLIST to the makefile flags or
+   #define NO_SYS_ERRLIST 1 in the code.  This will give you a strerror()
+   function which returns an error message containing the error code returned
+   by the i/o functions.  If you do not have errno, this message will be
+   meaningless.
+
+Usage:
+
+dumper [-d | -h | -o | -v] [filename]
+
+The default if no switch is given is "-h."  If no filename is specified,
+dumper will read from stdin.
+
+-d is decimal output.
+-o is octal output.
+-h is hex output.
+-v prints version information.  presently, this will terminate the program.
+
+Whenever there are no more characters to print on a line, dumper will
+print "+-" instead of a number code in hex mode, and "+--" instead of
+a number code in the other two modes.  This usually happens only at
+the end of the file when the last line doesn't have a full 16 bytes.
+It can also happen, however, in environments such as VMS where you may
+encounter record-oriented files. If dumper encounters a newline in such a
+file, the program may read a partial buffer. It will still keep track of
+the byte count, but will NEITHER count NOR display codes for the newline
+characters.
+
+On VMS, you may have more interesting results with the DCL "DUMP" utility.
+
+Comments, suggestions, bug reports and fixes are welcome any time.
+
+Jillian Alana Bolton
+jillian@rootaction.net

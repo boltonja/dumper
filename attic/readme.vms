@@ -26,3 +26,21 @@ BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+VMS NOTES:
+
+- The latest version of dumper compiles under VMS, but you must make a small
+  modification first.  At the very top of the file, place this line:
+
+   #define NO_STRLWR 1
+
+  That ought to do it.  If not, read the README file and try the suggestions
+  there for resolving undefined identifiers.
+
+- Dumper will probably not work with all of your files.  The binaries
+  should hopefully be okay.  Text files may work.  You are bound to find
+  some record-oriented files (e.g., RMS files) that the VMS "DUMP" utility
+  can show the structure of while dumper can only show the record content.
+
+- Reading from stdin should work, but has not been tested, i.e. redirect
+  output to dumper at your own risk. :)
