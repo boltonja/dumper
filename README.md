@@ -6,7 +6,7 @@ Dumper is a program which provides numeric and ASCII dumps of files. You may eit
 Platforms
 ---------
 
-Dumper has been successfully tested as documented under macOS Ventura, Debian Linux 12, FreeBSD 14, and Windows 11 with Visual Studio 2022. Porting to other Linux distributions or BSD-Derivatives, including earlier versions of macOS or Mac OS/X, is expected to be trivial. For a list of additional platforms that were supported in the past, have a look at attic/README.
+Dumper has been successfully tested as documented under macOS Ventura, Debian Linux 12, FreeBSD 14, OpenBSD 7.5, NetBSD 10, Linux Mint 21.3, and Windows 11. Porting to other Linux distributions or BSD-Derivatives, including earlier versions of macOS or Mac OS/X, is expected to be trivial. For a list of additional platforms that were supported in the past, have a look at attic/README.
 
 Dependencies
 ------------
@@ -26,7 +26,7 @@ For UNIX-like platforms:
 Building
 --------
 
-Building for Visual Studio 2022 should be possible by checking out the repository and loading the .sln or .vcxproj files. Building for UNIX-like systems is achieves with `make dumper`.  You can also `make clean`.
+Building for Visual Studio 2022 should be possible by checking out the repository and loading the .sln or .vcxproj files. Building for UNIX-like systems is achieves with `make dumper`. You can also `make clean`. To install, set or override the PREFIX variable in the makefile and then run `sudo make install`
 
 Dumper Manual
 =============
@@ -114,9 +114,11 @@ LICENSE
 =======
 
 Copyright 1991-2024 Jillian Alana Bolton
+
 Copyright 1995 Mark P. Fister
 
 The BSD 2-Clause License
+------------------------
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are

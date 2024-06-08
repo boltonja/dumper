@@ -29,6 +29,7 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+PREFIX=/usr/local
 CC= cc
 
 # CFLAGS= -g
@@ -41,3 +42,10 @@ dumper: $(OBJS)
 
 clean:
 	$(RM) -rf *.o *.dSYM *~ dumper x64 arm64
+
+install: dumper
+	install -d -D $(PREFIX)/bin -m 755       
+	install -d -D $(PREFIX)/man/man1 -m 755
+	install -m 755 dumper $(PREFIX)/bin
+	install -m 644 doc/dumper.1 $(PREFIX)/man/man1
+
