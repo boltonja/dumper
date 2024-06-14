@@ -26,7 +26,35 @@ For UNIX-like platforms:
 Building
 --------
 
-Building for Visual Studio 2022 should be possible by checking out the repository and loading the .sln or .vcxproj files. Building for UNIX-like systems is achieves with `make dumper`. You can also `make clean`. To install, set or override the PREFIX variable in the makefile and then run `sudo make install`
+Building for Visual Studio 2022 should be possible by checking out the repository and loading the .sln or .vcxproj files.
+
+Building for UNIX-like systems is achieved with BSD (or GNU) Make. The Makefile supports the following targets:
+
+- dumper:  builds only the executable and its constituent objects
+- clean:   removes the executable and its constituent objects
+- install: installs the executable and man page (see below)
+
+By default, the Makefile installs files to /usr/local/bin and /usr/local/man, but `PREFIX` variable overrides this (if set). Some systems, e.g: Chimera Linux, place local man pages under /usr/local/share. The command `man -w` shows the list of directories that `man(1)` searches for man pages, and the `MANDEST` variable overrides the default (`$(PREFIX)/man`) if it is set.
+
+Examples:
+
+To build the program:
+
+   $ make dumper
+
+To build and install the program:
+
+   $ make dumper install
+
+To install to a directory other than /usr/local:
+
+   $ make PREFIX=/opt/local dumper install
+
+To install on Chimera Linux:
+
+   $ make MANDEST=/usr/local/share/man dumper install
+
+Note that you may need to run the install step with `sudo(1)` or `doas(1)` unless you are already running as root.
 
 Dumper Manual
 =============
